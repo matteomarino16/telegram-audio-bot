@@ -30,7 +30,7 @@ def get_base_buttons():
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = InlineKeyboardMarkup(get_base_buttons())
-    await update.message.reply_text(
+    sent_message = await update.message.reply_text(
         "🎧 **BENVENUTO SU MUSIC BOT** 👽🧚‍♂️\n"
         "Ascolta e scarica la tua musica preferita direttamente da Telegram.\n\n"
         "🔍 **Come funziona**\n"
@@ -46,6 +46,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         parse_mode="Markdown",
         reply_markup=keyboard
     )
+    
+    # Pinna il messaggio per creare una "cartella" / dashboard persistente
+    try:
+        await context.bot.pin_chat_message(chat_id=update.effective_chat.id, message_id=sent_message.message_id)
+    except Exception:
+        # Potrebbe fallire se il bot non è admin o se è una chat privata senza permessi (raro in private)
+        pass
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = InlineKeyboardMarkup(get_base_buttons())
