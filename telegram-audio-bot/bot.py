@@ -14,7 +14,7 @@ TOKEN = os.getenv("BOT_TOKEN")
 if not TOKEN:
     raise RuntimeError("Manca BOT_TOKEN (variabile d'ambiente).")
 
-conn = sqlite3.connect("tracks.db", check_same_thread=False)
+conn = sqlite3.connect(os.path.join(os.path.dirname(__file__), "tracks.db"), check_same_thread=False)
 cur = conn.cursor()
 
 def get_base_buttons():
